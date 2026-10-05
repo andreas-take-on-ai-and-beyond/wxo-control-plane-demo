@@ -13,3 +13,8 @@ screens-v2/
 *.swp
 *.swo
 Thumbs.db
+
+# Dump files
+*.dump
+dumps/
+**/office-dumps/
