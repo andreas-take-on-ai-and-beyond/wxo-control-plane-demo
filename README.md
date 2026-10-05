@@ -2,7 +2,7 @@
 
 A guided click-through demo of the **watsonx Orchestrate Control Plane** AI Ops dashboard.
 
-**Live demo:** *(GitHub Pages URL will appear here after deployment)*
+**Live demo:** https://andreas-take-on-ai-and-beyond.github.io/wxo-control-plane-demo/
 
 ---
 
