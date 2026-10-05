@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>IBM watsonx Orchestrate — Control Plane</title>
+  <link rel="stylesheet" href="styles/demo.css" />
+</head>
+<body>
+
+  <!-- ── Splash / Intro ────────────────────────────────────── -->
+  <div id="splash">
+    <h1><b>watsonx Orchestrate</b><br>Control Plane — Guided Tour</h1>
+    <p id="splash-subtitle">A click-through demo of some core features of the AI Ops dashboard:<br>Adoption · FinOps · Security &amp; Risk · Controls</p>
+    <button id="splash-cta">Start Tour →</button>
+    <p id="splash-meta">8 steps · keyboard: ← → · ESC toggles annotations</p>
+  </div>
+
+  <!-- ── End screen ────────────────────────────────────────── -->
+  <div id="endscreen">
+    <h1><b>watsonx Orchestrate</b><br>Control Plane — Guided Tour</h1>
+    <p class="end-subtitle">You experienced some core features of the AI Ops dashboard:<br>Adoption · FinOps · Security &amp; Risk · Controls</p>
+    <button id="btn-restart">↺ Restart Tour</button>
+  </div>
+
+  <!-- ── Top bar ────────────────────────────────────────────── -->
+  <header id="topbar">
+    <div id="topbar-brand">
+      <span id="topbar-title">IBM watsonx Orchestrate — Control Plane</span>
+    </div>
+    <span id="topbar-subtitle">Guided Demo Tour</span>
+  </header>
+
+  <!-- ── Progress bar ──────────────────────────────────────── -->
+  <nav id="progressbar">
+    <div id="progress-steps">
+      <!-- 8 step pills – generated matching config.steps.length -->
+      <div class="p-step" title="Step 1: Overview"></div>
+      <div class="p-step" title="Step 2: Adoption"></div>
+      <div class="p-step" title="Step 3: AskHR Drilldown"></div>
+      <div class="p-step" title="Step 4: FinOps by Agent"></div>
+      <div class="p-step" title="Step 5: FinOps by Model"></div>
+      <div class="p-step" title="Step 6: Token Trends table"></div>
+      <div class="p-step" title="Step 7: Security & Risk"></div>
+      <div class="p-step" title="Step 8: Controls Library"></div>
+    </div>
+    <span id="progress-label">Step 1 of 8</span>
+    <div id="kbd-hint">
+      <span class="kbd">←</span><span class="kbd">→</span> navigate &nbsp;
+      <span class="kbd">ESC</span> toggle bubble
+    </div>
+  </nav>
+
+  <!-- ── Stage (screenshot + overlays) ─────────────────────── -->
+  <main id="stage">
+    <div id="screen-wrap">
+
+      <!-- Screenshot -->
+      <img id="screen-img" src="" alt="watsonx Orchestrate Control Plane screenshot" draggable="false" />
+
+      <!-- Dim overlay (click to restore bubble) -->
+      <div id="dim-overlay"></div>
+
+      <!-- Hotspot (pulsing ring) -->
+      <div id="hotspot" class="hidden">
+        <div class="hotspot-ring"></div>
+        <div class="hotspot-ring"></div>
+        <div class="hotspot-ring"></div>
+        <div class="hotspot-dot"></div>
+        <span class="hotspot-label" id="hotspot-label">Click here</span>
+      </div>
+
+      <!-- Annotation bubble -->
+      <div id="bubble" class="hidden">
+        <div id="bubble-header">
+          <span id="bubble-step-badge">1 / 8</span>
+          <span id="bubble-title">Step title</span>
+          <button id="bubble-close" title="Hide annotation (ESC)">×</button>
+        </div>
+        <div id="bubble-body">Step body text goes here.</div>
+        <div id="bubble-footer">
+          <button id="btn-prev" disabled>← Back</button>
+          <button id="btn-next">Next →</button>
+        </div>
+      </div>
+
+    </div><!-- /screen-wrap -->
+  </main>
+
+  <!-- ── Scripts (config first, then engine) ───────────────── -->
+  <script src="js/config.js"></script>
+  <script src="js/engine.js"></script>
+
+</body>
+</html>

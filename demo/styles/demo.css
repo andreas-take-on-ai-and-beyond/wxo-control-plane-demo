@@ -1,0 +1,510 @@
+/* ============================================================
+   IBM watsonx Orchestrate — Control Plane Click-Through Demo
+   Styles
+   ============================================================ */
+
+/* ── Reset & base ──────────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+/* NOTE: font sizes are set below — search for "bubble" to edit */
+
+:root {
+  --bubble-title-size: 15px;
+  --bubble-body-size:  14px;
+  --ibm-blue-60:   #0f62fe;
+  --ibm-blue-70:   #0043ce;
+  --ibm-blue-10:   #edf5ff;
+  --ibm-gray-90:   #161616;
+  --ibm-gray-80:   #262626;
+  --ibm-gray-70:   #393939;
+  --ibm-gray-20:   #e0e0e0;
+  --ibm-gray-10:   #f4f4f4;
+  --ibm-white:     #ffffff;
+  --ibm-yellow:    #f1c21b;
+  --ibm-orange:    #ff832b;
+
+  --topbar-h:      48px;
+  --progressbar-h: 40px;
+  --bubble-w:      380px;
+  --radius:        4px;
+  --shadow:        0 4px 16px rgba(0,0,0,.35);
+  --transition:    .22s cubic-bezier(.4,0,.2,1);
+}
+
+html, body {
+  height: 100%;
+  font-family: 'IBM Plex Sans', 'Helvetica Neue', Arial, sans-serif;
+  font-size: 14px;
+  background: var(--ibm-gray-90);
+  color: var(--ibm-white);
+  overflow: hidden;
+}
+
+/* ── Top bar ───────────────────────────────────────────────── */
+#topbar {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  height: var(--topbar-h);
+  background: var(--ibm-gray-80);
+  border-bottom: 1px solid var(--ibm-gray-70);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 16px;
+  z-index: 100;
+  gap: 16px;
+}
+
+#topbar-brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-shrink: 0;
+}
+
+#topbar-brand svg { flex-shrink: 0; }
+
+#topbar-title {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--ibm-white);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+#topbar-subtitle {
+  font-size: 11px;
+  color: var(--ibm-gray-20);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: none;
+}
+
+/* ── Progress bar ──────────────────────────────────────────── */
+#progressbar {
+  position: fixed;
+  top: var(--topbar-h);
+  left: 0; right: 0;
+  height: var(--progressbar-h);
+  background: var(--ibm-gray-80);
+  border-bottom: 1px solid var(--ibm-gray-70);
+  display: flex;
+  align-items: center;
+  padding: 0 16px;
+  gap: 8px;
+  z-index: 100;
+}
+
+#progress-steps {
+  display: flex;
+  gap: 4px;
+  align-items: center;
+}
+
+.p-step {
+  width: 28px;
+  height: 4px;
+  background: var(--ibm-gray-70);
+  border-radius: 2px;
+  cursor: pointer;
+  transition: background var(--transition);
+  flex-shrink: 0;
+}
+
+.p-step:hover { background: var(--ibm-gray-20); }
+.p-step.active { background: var(--ibm-blue-60); }
+.p-step.done   { background: var(--ibm-blue-70); }
+
+#progress-label {
+  font-size: 12px;
+  color: var(--ibm-gray-20);
+  margin-left: 8px;
+  flex-shrink: 0;
+}
+
+/* keyboard hint */
+#kbd-hint {
+  margin-left: auto;
+  font-size: 11px;
+  color: var(--ibm-gray-20);
+  display: flex;
+  gap: 6px;
+  align-items: center;
+  flex-shrink: 0;
+}
+.kbd {
+  background: var(--ibm-gray-70);
+  border-radius: var(--radius);
+  padding: 1px 6px;
+  font-size: 11px;
+  font-family: 'IBM Plex Mono', monospace;
+}
+
+/* ── Stage (screenshot area) ────────────────────────────────── */
+#stage {
+  position: fixed;
+  top: calc(var(--topbar-h) + var(--progressbar-h));
+  left: 0; right: 0;
+  bottom: 0;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #0a0a0a;
+}
+
+/* Screen wrapper – keeps aspect ratio 16:9 */
+#screen-wrap {
+  position: relative;
+  /* sized via JS to fit stage */
+}
+
+#screen-img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: fill;
+  user-select: none;
+  -webkit-user-drag: none;
+}
+
+
+/* ── Hotspot (pulsing click target) ─────────────────────────── */
+#hotspot {
+  position: absolute;
+  transform: translate(-50%, -50%);
+  cursor: pointer;
+  z-index: 30;
+  pointer-events: all;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+#hotspot.hidden { display: none; }
+
+.hotspot-ring {
+  position: absolute;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  border: 1.5px solid rgba(15,98,254,.7);
+  animation: pulse-ring 2.4s ease-out infinite;
+  pointer-events: none;
+}
+.hotspot-ring:nth-child(2) { animation-delay: .8s; }
+.hotspot-ring:nth-child(3) { animation-delay: 1.6s; }
+
+@keyframes pulse-ring {
+  0%   { transform: scale(.7); opacity: .8; }
+  100% { transform: scale(1.9); opacity: 0; }
+}
+
+.hotspot-dot {
+  width: 10px;
+  height: 10px;
+  background: var(--ibm-blue-60);
+  border-radius: 50%;
+  border: 1.5px solid var(--ibm-white);
+  box-shadow: 0 0 0 2px rgba(15,98,254,.35);
+  position: relative;
+  z-index: 1;
+  transition: transform .15s;
+}
+#hotspot:hover .hotspot-dot { transform: scale(1.2); }
+
+.hotspot-label {
+  position: absolute;
+  top: calc(100% + 8px);
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--ibm-blue-60);
+  color: var(--ibm-white);
+  font-size: 11px;
+  font-weight: 600;
+  white-space: nowrap;
+  padding: 3px 8px;
+  border-radius: var(--radius);
+  pointer-events: none;
+  letter-spacing: .3px;
+}
+
+/* ── Bubble ─────────────────────────────────────────────────── */
+#bubble {
+  position: absolute;
+  width: var(--bubble-w);
+  background: var(--ibm-gray-80);
+  border: 1px solid var(--ibm-blue-60);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  z-index: 40;
+  transition: opacity var(--transition), transform var(--transition);
+  pointer-events: all;
+}
+
+#bubble.hidden {
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(8px);
+}
+
+/* blue top accent */
+#bubble::before {
+  content: '';
+  display: block;
+  height: 3px;
+  background: var(--ibm-blue-60);
+  border-radius: var(--radius) var(--radius) 0 0;
+}
+
+/* Arrow pointer toward hotspot – toggled via JS */
+#bubble.arrow-right::after,
+#bubble.arrow-left::after,
+#bubble.arrow-top::after,
+#bubble.arrow-bottom::after {
+  content: '';
+  position: absolute;
+  border: 8px solid transparent;
+  pointer-events: none;
+}
+#bubble.arrow-right::after {
+  right: -16px;
+  top: 28px;
+  border-left-color: var(--ibm-blue-60);
+}
+#bubble.arrow-left::after {
+  left: -16px;
+  top: 28px;
+  border-right-color: var(--ibm-blue-60);
+}
+#bubble.arrow-bottom::after {
+  bottom: -16px;
+  left: 28px;
+  border-top-color: var(--ibm-blue-60);
+}
+#bubble.arrow-top::after {
+  top: -16px;
+  left: 28px;
+  border-bottom-color: var(--ibm-blue-60);
+}
+
+#bubble-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  padding: 12px 14px 6px;
+  gap: 8px;
+}
+
+#bubble-step-badge {
+  background: var(--ibm-blue-60);
+  color: var(--ibm-white);
+  font-size: 10px;
+  font-weight: 700;
+  padding: 2px 7px;
+  border-radius: 20px;
+  flex-shrink: 0;
+  margin-top: 2px;
+  letter-spacing: .4px;
+}
+
+#bubble-title {
+  font-size: var(--bubble-title-size);
+  font-weight: 700;
+  color: var(--ibm-white);
+  line-height: 1.3;
+  flex: 1;
+}
+
+#bubble-close {
+  background: none;
+  border: none;
+  color: var(--ibm-gray-20);
+  cursor: pointer;
+  font-size: 18px;
+  line-height: 1;
+  padding: 0 2px;
+  flex-shrink: 0;
+  opacity: .7;
+  transition: opacity .15s;
+}
+#bubble-close:hover { opacity: 1; }
+
+#bubble-body {
+  font-size: var(--bubble-body-size);
+  color: var(--ibm-gray-20);
+  line-height: 1.55;
+  padding: 0 14px 14px;
+}
+#bubble-body b  { color: var(--ibm-white); font-weight: 600; }
+#bubble-body i  { font-style: italic; }
+
+#bubble-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 14px 12px;
+  border-top: 1px solid var(--ibm-gray-70);
+  gap: 8px;
+}
+
+#btn-prev {
+  background: none;
+  border: 1px solid var(--ibm-gray-70);
+  color: var(--ibm-gray-20);
+  padding: 7px 14px;
+  border-radius: var(--radius);
+  cursor: pointer;
+  font-size: 13px;
+  font-family: inherit;
+  transition: border-color .15s, color .15s;
+}
+#btn-prev:hover { border-color: var(--ibm-gray-20); color: var(--ibm-white); }
+#btn-prev:disabled { opacity: .3; cursor: default; }
+
+#btn-next {
+  background: var(--ibm-blue-60);
+  border: 1px solid var(--ibm-blue-60);
+  color: var(--ibm-white);
+  padding: 7px 16px;
+  border-radius: var(--radius);
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 600;
+  font-family: inherit;
+  transition: background .15s;
+  flex-shrink: 0;
+}
+#btn-next:hover { background: var(--ibm-blue-70); }
+#btn-next.end-state {
+  background: #198038;
+  border-color: #198038;
+}
+#btn-next.end-state:hover { background: #0e6027; }
+
+/* ── Dim overlay when step has finished / no hotspot ─────────── */
+#dim-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(0,0,0,.0);
+  pointer-events: none;
+  transition: background .3s;
+  z-index: 20;
+}
+#dim-overlay.active {
+  background: rgba(0,0,0,.25);
+  pointer-events: all;
+}
+
+/* ── Splash / Intro screen ───────────────────────────────────── */
+#splash {
+  position: fixed;
+  inset: 0;
+  background: var(--ibm-gray-90);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 24px;
+  z-index: 200;
+  transition: opacity .4s;
+}
+#splash.hidden { opacity: 0; pointer-events: none; }
+
+#splash h1,
+#endscreen h1 {
+  font-size: 28px;
+  font-weight: 300;
+  text-align: center;
+  max-width: 640px;
+  line-height: 1.3;
+}
+#splash h1 b,
+#endscreen h1 b { font-weight: 700; color: var(--ibm-blue-60); }
+
+#splash p {
+  font-size: 15px;
+  color: var(--ibm-gray-20);
+  text-align: center;
+  max-width: 480px;
+  line-height: 1.6;
+}
+
+#splash-cta {
+  background: var(--ibm-blue-60);
+  border: none;
+  color: var(--ibm-white);
+  padding: 14px 32px;
+  font-size: 16px;
+  font-weight: 600;
+  font-family: inherit;
+  border-radius: var(--radius);
+  cursor: pointer;
+  margin-top: 8px;
+  transition: background .15s;
+}
+#splash-cta:hover { background: var(--ibm-blue-70); }
+
+#splash-meta {
+  font-size: 11px;
+  color: var(--ibm-gray-70);
+  margin-top: 4px;
+}
+
+/* ── End screen ─────────────────────────────────────────────── */
+#endscreen {
+  position: fixed;
+  inset: 0;
+  background: var(--ibm-gray-90);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 24px;
+  z-index: 200;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity .4s;
+}
+#endscreen.visible { opacity: 1; pointer-events: all; }
+
+/* end screen typography — mirrors splash exactly */
+.end-subtitle {
+  font-size: 15px;
+  color: var(--ibm-gray-20);
+  text-align: center;
+  max-width: 480px;
+  line-height: 1.6;
+}
+
+.end-meta {
+  font-size: 11px;
+  color: var(--ibm-gray-70);
+  margin-top: 4px;
+}
+
+#btn-restart {
+  background: var(--ibm-blue-60);
+  border: none;
+  color: var(--ibm-white);
+  padding: 14px 32px;
+  font-size: 16px;
+  font-weight: 600;
+  font-family: inherit;
+  border-radius: var(--radius);
+  cursor: pointer;
+  margin-top: 8px;
+  transition: background .15s;
+}
+#btn-restart:hover { background: var(--ibm-blue-70); }
+
+/* ── Responsive ─────────────────────────────────────────────── */
+@media (max-width: 700px) {
+  :root { --bubble-w: calc(100vw - 24px); }
+  #kbd-hint { display: none; }
+  #topbar-subtitle { display: none; }
+}
+
+/* ── IBM Plex font (Google Fonts CDN fallback) ──────────────── */
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400&family=IBM+Plex+Sans:wght@300;400;600;700&display=swap');

@@ -1,0 +1,15 @@
+# macOS
+.DS_Store
+**/.DS_Store
+
+# Bob IDE working files (not part of the demo)
+.bob/
+
+# Source screenshots (working files — demo uses demo/screens/)
+screens-v2/
+
+# Editor & OS
+.vscode/
+*.swp
+*.swo
+Thumbs.db
