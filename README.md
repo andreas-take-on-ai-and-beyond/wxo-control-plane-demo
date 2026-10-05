@@ -90,7 +90,3 @@ git push -u origin main
 ## Disclaimer
 
 All data shown in the screenshots is **synthetic demo data**. No real client data, PII, or confidential information is included.
-
----
-
-*Built with IBM watsonx · IBM Pre-Sales Demo Builder*
