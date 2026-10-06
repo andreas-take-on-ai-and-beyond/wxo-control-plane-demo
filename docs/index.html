@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>IBM watsonx Orchestrate — Control Plane</title>
+  <title>watsonx Orchestrate — Control Plane</title>
   <link rel="stylesheet" href="styles/demo.css" />
 </head>
 <body>
@@ -19,14 +19,81 @@
   <!-- ── End screen ────────────────────────────────────────── -->
   <div id="endscreen">
     <h1><b>watsonx Orchestrate</b><br>Control Plane — Guided Tour</h1>
-    <p class="end-subtitle">You experienced some core features of the AI Ops dashboard:<br>Adoption · FinOps · Security &amp; Risk · Controls</p>
-    <button id="btn-restart">↺ Restart Tour</button>
+    <p class="end-subtitle">You experienced some core features of the AI Ops dashboard:<br>Adoption · FinOps · Security &amp; Risk · Controls <br><br><b>Interested in learning more?</b><br> Explore additional capabilities and use cases through a personalized live demonstration.</p>
+    <div class="end-actions">
+      <button id="btn-request-demo">Request a Live Demo</button>
+      <button id="btn-restart">↺ Restart Tour</button>
+    </div>
+  </div>
+
+  <!-- ── Contact modal ──────────────────────────────────────── -->
+  <div id="modal-overlay" class="modal-hidden" role="dialog" aria-modal="true" aria-labelledby="modal-heading">
+    <div id="modal">
+      <div id="modal-header">
+        <span id="modal-heading">Request a Live Demo</span>
+        <button id="modal-close" aria-label="Close">&times;</button>
+      </div>
+
+      <!-- Success state -->
+      <div id="form-success" class="modal-hidden">
+        <div id="form-success-icon">✓</div>
+        <p id="form-success-title">Thank you!</p>
+        <p id="form-success-body">Your request has been sent to <a href="mailto:schneider@de.ibm.com">schneider@de.ibm.com</a>. We will get in touch with you shortly.</p>
+        <button id="btn-success-close">Close</button>
+      </div>
+
+      <!-- Form state -->
+      <div id="form-wrap">
+        <p id="modal-intro">Fill in your details and we'll reach out to arrange a personalized demonstration.</p>
+
+        <form id="demo-request-form">
+
+          <div class="field-row">
+            <div class="field-group">
+              <label for="fs-name">Full name <span class="required">*</span></label>
+              <input type="text" id="fs-name" name="name" placeholder="Jane Smith" required data-fs-field />
+              <span class="field-error" data-fs-error="name"></span>
+            </div>
+            <div class="field-group">
+              <label for="fs-company">Company <span class="required">*</span></label>
+              <input type="text" id="fs-company" name="company" placeholder="Acme Corp" required data-fs-field />
+              <span class="field-error" data-fs-error="company"></span>
+            </div>
+          </div>
+
+          <div class="field-row">
+            <div class="field-group">
+              <label for="fs-email">Work email <span class="required">*</span></label>
+              <input type="email" id="fs-email" name="email" placeholder="jane@acme.com" required data-fs-field />
+              <span class="field-error" data-fs-error="email"></span>
+            </div>
+            <div class="field-group">
+              <label for="fs-role">Job title</label>
+              <input type="text" id="fs-role" name="role" placeholder="AI Ops Manager" data-fs-field />
+            </div>
+          </div>
+
+          <div class="field-group">
+            <label for="fs-message">What would you like to explore?</label>
+            <textarea id="fs-message" name="message" rows="3" placeholder="E.g. FinOps cost visibility, agent governance, security controls…" data-fs-field></textarea>
+          </div>
+
+          <div id="form-footer">
+            <p id="privacy-note">Your details are used solely to follow up on your demo request. They are not shared with anyone else.</p>
+            <button type="submit" id="btn-submit" data-fs-submit-btn>Send request →</button>
+          </div>
+
+        </form>
+
+        <p id="mailto-fallback">Or email directly to: <a href="mailto:schneider@de.ibm.com" target="_blank" rel="noopener">schneider@de.ibm.com</a></p>
+      </div>
+    </div>
   </div>
 
   <!-- ── Top bar ────────────────────────────────────────────── -->
   <header id="topbar">
     <div id="topbar-brand">
-      <span id="topbar-title">IBM watsonx Orchestrate — Control Plane</span>
+      <span id="topbar-title">watsonx Orchestrate — Control Plane</span>
     </div>
     <span id="topbar-subtitle">Guided Demo Tour</span>
   </header>
@@ -45,6 +112,7 @@
       <div class="p-step" title="Step 8: Controls Library"></div>
     </div>
     <span id="progress-label">Step 1 of 8</span>
+    <button id="btn-request-demo-header">✉ Request a Live Demo</button>
     <div id="kbd-hint">
       <span class="kbd">←</span><span class="kbd">→</span> navigate &nbsp;
       <span class="kbd">ESC</span> toggle bubble
@@ -90,6 +158,67 @@
   <!-- ── Scripts (config first, then engine) ───────────────── -->
   <script src="js/config.js"></script>
   <script src="js/engine.js"></script>
+
+  <!-- ── Formspree AJAX SDK ────────────────────────────────── -->
+  <script>
+    window.formspree = window.formspree || function () { (formspree.q = formspree.q || []).push(arguments); };
+    formspree('initForm', { formElement: '#demo-request-form', formId: 'mwlvpvnd' });
+  </script>
+  <script src="https://unpkg.com/@formspree/ajax@1" defer></script>
+
+  <!-- ── Modal controller ──────────────────────────────────── -->
+  <script>
+  (function () {
+    'use strict';
+    const overlay      = document.getElementById('modal-overlay');
+    const btnOpen       = document.getElementById('btn-request-demo');
+    const btnOpenHeader = document.getElementById('btn-request-demo-header');
+    const btnClose     = document.getElementById('modal-close');
+    const form         = document.getElementById('demo-request-form');
+    const formWrap     = document.getElementById('form-wrap');
+    const successPanel = document.getElementById('form-success');
+    const btnSuccClose = document.getElementById('btn-success-close');
+
+    function openModal() {
+      overlay.classList.remove('modal-hidden');
+      overlay.classList.add('modal-visible');
+      document.getElementById('fs-name').focus();
+    }
+
+    function closeModal() {
+      overlay.classList.remove('modal-visible');
+      overlay.classList.add('modal-hidden');
+      // reset form + success state for next open
+      setTimeout(function () {
+        form.reset();
+        formWrap.style.display  = '';
+        successPanel.classList.add('modal-hidden');
+      }, 300);
+    }
+
+    btnOpen.addEventListener('click', openModal);
+    btnOpenHeader.addEventListener('click', openModal);
+    btnClose.addEventListener('click', closeModal);
+    btnSuccClose.addEventListener('click', closeModal);
+
+    // close on backdrop click
+    overlay.addEventListener('click', function (e) {
+      if (e.target === overlay) closeModal();
+    });
+
+    // close on ESC (only when modal is open)
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape' && overlay.classList.contains('modal-visible')) closeModal();
+    });
+
+    // listen for Formspree successful submission
+    // @formspree/ajax dispatches a custom event on the form element
+    form.addEventListener('formspree:success', function () {
+      formWrap.style.display  = 'none';
+      successPanel.classList.remove('modal-hidden');
+    });
+  }());
+  </script>
 
 </body>
 </html>
