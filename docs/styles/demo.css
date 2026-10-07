@@ -728,7 +728,13 @@ html, body {
 }
 #mailto-fallback a:hover { text-decoration: underline; }
 
-/* Formspree SDK error/success banner divs */
+/* Formspree SDK error/success banner divs — hide SDK-injected UI */
+[data-formspree-success],
+[data-formspree-error],
+form [data-formspree-thankyou],
+.formspree-thankyou,
+#demo-request-form ~ p,
+#demo-request-form ~ div:not(#form-footer) { display: none !important; }
 
 /* ── Success panel ───────────────────────────────────────────── */
 #form-success {

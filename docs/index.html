@@ -212,6 +212,16 @@
     // listen for Formspree successful submission
     // @formspree/ajax dispatches a custom event on the form element
     form.addEventListener('formspree:success', function () {
+      // Remove any SDK-injected thank-you nodes that appear outside our modal panels
+      // The @formspree/ajax SDK appends a sibling element after form submission
+      var modal = document.getElementById('modal');
+      Array.prototype.forEach.call(modal.childNodes, function (node) {
+        if (node !== document.getElementById('modal-header') &&
+            node !== document.getElementById('form-success') &&
+            node !== document.getElementById('form-wrap')) {
+          if (node.nodeType === 1) node.style.display = 'none';
+        }
+      });
       formWrap.style.display  = 'none';
       successPanel.classList.remove('modal-hidden');
     });
